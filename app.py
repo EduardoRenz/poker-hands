@@ -1,7 +1,7 @@
 # %%
 
 from collections import Counter
-from constants import RANKS, SUITS
+from constants import RANKS, SUITS, STRENGTH_ORDER
 from Deck import Deck
 
 deck = Deck()
@@ -55,8 +55,7 @@ def evaluate(mao_jogador, board):
     combinacoes = combinations(todas_as_cartas, 5)
 
     def valor_combinacao(combinacao_str):
-        ordem = ["High Card", "One Pair", "Two Pair", "Three of a Kind",
-                 "Straight", "Flush", "Full House", "Four of a Kind", "Straight Flush"]
+        ordem = STRENGTH_ORDER
         return ordem.index(combinacao_str)
 
     for combinacao in combinacoes:
@@ -68,11 +67,16 @@ def evaluate(mao_jogador, board):
 
 def get_winner(players_hands, board):
     """Retorna o jogador com a melhor mão de poker."""
-    return max(players_hands, key=lambda x: evaluate(x, board))
+    return max(players_hands, key=lambda x: STRENGTH_ORDER.index(evaluate(x, board)))
 
 
 def get_winner_index(players_hands, board):
     return players_hands.index(get_winner(players_hands, board))
+
+
+def exibir_cartas(cartas):
+    """Exibe uma mão de cartas formatada."""
+    return " ".join(exibir_carta(carta) for carta in cartas)
 
 
 def exibir_carta(carta):
@@ -95,20 +99,21 @@ print("\nPlayer 2")
 print(player_2)
 
 
-board = deck.pick_random_cards(3)
+board = deck.pick_random_cards(5)
 
-print("\nBoard")
-print(board)
 
 evaluation = evaluate(mao_jogador, board)
 player_2_evaluation = evaluate(player_2, board)
-print("\nMatch")
-print(evaluation)
 
-winner = get_winner_index([mao_jogador, player_2], board)
-print("\nWinner: ", "You" if winner == 0 else "Player 2")
-print(f"""with {evaluation if winner == 0 else player_2_evaluation} against {
-      player_2_evaluation if winner == 0 else evaluation} """)
+
+winner_index = get_winner_index([mao_jogador, player_2], board)
+winner_hand = get_winner([mao_jogador, player_2], board)
+print("\nWinner: ", winner_index)
+print(f"""
+    Player 1: {exibir_mao(mao_jogador)} ({evaluation})
+    Player 2: {exibir_mao(player_2)} ({player_2_evaluation})
+    Board: {exibir_mao(board)}
+    Winner: {exibir_mao(winner_hand)}""")
 
 
 # %%
