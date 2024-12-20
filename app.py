@@ -1,23 +1,10 @@
 # %%
-import random
+
 from collections import Counter
 from constants import RANKS, SUITS
+from Deck import Deck
 
-
-def generate_deck():
-    """Cria um baralho padrão de 52 cartas."""
-    return [(rank, suit) for rank in RANKS for suit in SUITS]
-
-
-def pick_random_cards(baralho, card_amount=2):
-    """Gera uma mão aleatória de um certo número de cartas."""
-    return random.sample(baralho, card_amount)
-
-
-def remove_from_deck(deck, cards_to_remove):
-    for card in cards_to_remove:
-        deck.remove(card)
-    return deck
+deck = Deck()
 
 
 def evaluate_hand(mao):
@@ -100,33 +87,30 @@ def exibir_mao(mao):
     return " ".join(exibir_carta(carta) for carta in mao)
 
 
-# %%
-deck = generate_deck()
-# print(deck, len(deck))
-
-mao_jogador = pick_random_cards([('A', 'H'), ('A', 'S')])
+mao_jogador = [('A', 'H'), ('A', 'S')]
 print("\nMinha mao")
 print(mao_jogador)
-deck = remove_from_deck(deck, mao_jogador)
+deck.remove_from_deck(mao_jogador)
 
-player_2 = pick_random_cards(deck)
+player_2 = deck.pick_random_cards()
 print("\nPlayer 2")
 print(player_2)
-deck = remove_from_deck(deck, player_2)
 
-board = pick_random_cards(deck, 5)
-deck = remove_from_deck(deck, board)
+
+board = deck.pick_random_cards(3)
 
 print("\nBoard")
 print(board)
 
 evaluation = evaluate(mao_jogador, board)
+player_2_evaluation = evaluate(player_2, board)
 print("\nMatch")
 print(evaluation)
 
 winner = get_winner_index([mao_jogador, player_2], board)
-print("\nWinner")
-print("You" if winner == 0 else "Player 2")
+print("\nWinner: ", "You" if winner == 0 else "Player 2")
+print(f"""with {evaluation if winner == 0 else player_2_evaluation} against {
+      player_2_evaluation if winner == 0 else evaluation} """)
 
 
 # %%

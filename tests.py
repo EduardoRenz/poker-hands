@@ -1,24 +1,27 @@
 import unittest
 
-from app import generate_deck, pick_random_cards, evaluate_hand, evaluate, get_winner
+from app import get_winner_index, evaluate_hand, evaluate, get_winner
+from Deck import Deck
 
 
 class TestGenerateDeck(unittest.TestCase):
 
     def test_length(self):
-        self.assertEqual(len(generate_deck()), 52)
+        deck = Deck()
+        self.assertEqual(len(deck.deck), 52)
 
 
 class TestPickRandomCards(unittest.TestCase):
 
     def test_length(self):
-        self.assertEqual(len(pick_random_cards(generate_deck())), 2)
+        deck = Deck()
+        self.assertEqual(len(deck.pick_random_cards()), 2)
 
-    def test_cards(self):
-        deck = generate_deck()
-        cards = pick_random_cards(deck)
+    def test_pick_cards(self):
+        deck = Deck()
+        cards = deck.pick_random_cards()
         for card in cards:
-            self.assertIn(card, deck)
+            self.assertNotIn(card, deck.deck)
 
 
 class TestEvaluateHand(unittest.TestCase):
@@ -99,11 +102,23 @@ class TestEvaluate(unittest.TestCase):
                          ('A', 'H'), ('2', 'H'), ('3', 'H'), ('4', 'H'), ('5', 'H')]), 'Straight Flush')
 
 
-# class TestGetWinner(unittest.TestCase):
+class TestGetWinner(unittest.TestCase):
 
-#     def test_high_card(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['K', 'H'], ['Q', 'H'], ['J', 'H'], [
-#                          'T', 'H'])], [(['A', 'D'], ['K', 'D'], ['Q', 'D'], ['J', 'D'], ['T', 'D'])]), 0)
+    def test_high_card_against_high_card(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('5', 'D'), ('7', 'H')]
+        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate_hand(player_1), 'High Card')
+        self.assertEqual(evaluate_hand(player_2), 'High Card')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+
+    def test_tie_of_high_card(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('8', 'C'), ('3', 'D')]
+        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate_hand(player_1), 'High Card')
+        self.assertEqual(evaluate_hand(player_2), 'High Card')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), -1)
 
 #     def test_one_pair(self):
 #         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['K', 'H'], ['Q', 'H'], [
