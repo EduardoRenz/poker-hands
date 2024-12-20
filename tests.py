@@ -105,11 +105,11 @@ class TestEvaluate(unittest.TestCase):
 class TestGetWinner(unittest.TestCase):
 
     def test_high_card_against_high_card(self):
-        player_1 = [('8', 'H'), ('3', 'S')]
+        player_1 = [('A', 'H'), ('3', 'S')]
         player_2 = [('5', 'D'), ('7', 'H')]
-        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
-        self.assertEqual(evaluate_hand(player_1), 'High Card')
-        self.assertEqual(evaluate_hand(player_2), 'High Card')
+        board = [('8', 'S'), ('K', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate_hand(player_1 + board), 'High Card')
+        self.assertEqual(evaluate_hand(player_2 + board), 'High Card')
         self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
 
     def test_tie_of_high_card(self):

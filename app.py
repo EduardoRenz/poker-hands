@@ -24,8 +24,6 @@ def evaluate_hand(mao):
         for i in range(len(unique_ranks) - 4):
             if all(unique_ranks[i+j] == unique_ranks[i] - j for j in range(5)):
                 return True
-        # Verifica a sequência especial A, 2, 3, 4, 5
-        return unique_ranks == [RANKS.index('A'), RANKS.index('5'), RANKS.index('4'), RANKS.index('3'), RANKS.index('2')]
 
     rank_counts = Counter(ranks_mao)
     counts = sorted(rank_counts.values(), reverse=True)
