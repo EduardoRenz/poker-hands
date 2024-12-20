@@ -44,7 +44,7 @@ class TestEvaluateHand(unittest.TestCase):
 
     def test_straight(self):
         self.assertEqual(evaluate_hand(
-            [('A', 'D'), ('2', 'H'), ('3', 'H'), ('4', 'C'), ('5', 'H')]), 'Straight')
+            [('6', 'D'), ('2', 'H'), ('3', 'H'), ('4', 'C'), ('5', 'H')]), 'Straight')
 
     def test_flush(self):
         self.assertEqual(evaluate_hand(
