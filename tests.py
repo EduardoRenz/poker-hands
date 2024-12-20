@@ -98,8 +98,8 @@ class TestEvaluate(unittest.TestCase):
                          ('A', 'S'), ('A', 'C'), ('3', 'C'), ('5', 'S'), ('K', 'H')]), 'Four of a Kind')
 
     def test_straight_flush(self):
-        self.assertEqual(evaluate([('A', 'H'), ('2', 'H'), ('3', 'H'), ('4', 'H'), ('5', 'H')], [
-                         ('A', 'H'), ('2', 'H'), ('3', 'H'), ('4', 'H'), ('5', 'H')]), 'Straight Flush')
+        self.assertEqual(evaluate([('3', 'H'), ('2', 'H')], [
+                         ('A', 'S'), ('2', 'S'), ('6', 'H'), ('4', 'H'), ('5', 'H')]), 'Straight Flush')
 
 
 class TestGetWinner(unittest.TestCase):
