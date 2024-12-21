@@ -168,21 +168,53 @@ class TestGetWinner(unittest.TestCase):
         self.assertEqual(get_winner_index(
             [player_1, player_2, player_3], board), None)
 
-#     def test_flush(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['2', 'H'], ['3', 'H'], ['4', 'H'], [
-#                          '5', 'H'])], [(['A', 'H'], ['2', 'H'], ['3', 'H'], ['4', 'H'], ['5', 'H'])]), 0)
+    def test_three_of_a_kind(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('K', 'C'), ('3', 'D')]
+        board = [('8', 'S'), ('8', 'D'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Three of a Kind')
+        self.assertEqual(evaluate(player_2, board), 'One Pair')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
 
-#     def test_full_house(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['A', 'C'], ['K', 'H'], [
-#                          'K', 'D'])], [(['A', 'H'], ['A', 'D'], ['A', 'C'], ['K', 'H'], ['K', 'D'])]), 0)
+    def test_full_house(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('K', 'C'), ('Q', 'D')]
+        board = [('8', 'S'), ('8', 'D'), ('2', 'S'), ('3', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Full House')
+        self.assertEqual(evaluate(player_2, board), 'One Pair')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
 
-#     def test_four_of_a_kind(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['A', 'C'], ['A', 'S'], [
-#                          'K', 'H'])], [(['A', 'H'], ['A', 'D'], ['A', 'C'], ['A', 'S'], ['K', 'H'])]), 0)
+    def test_four_of_a_kind(self):
+        player_1 = [('8', 'H'), ('8', 'S')]
+        player_2 = [('K', 'C'), ('Q', 'D')]
+        board = [('8', 'D'), ('8', 'C'), ('2', 'S'), ('8', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Four of a Kind')
+        self.assertEqual(evaluate(player_2, board), 'Three of a Kind')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
 
-#     def test_straight_flush(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['2', 'H'], ['3', 'H'], ['4', 'H'], [
-#                          '5', 'H'])], [(['A', 'H'], ['2', 'H'], ['3', 'H'], ['4', 'H'], ['5', 'H'])]), 0)
+    def test_straight_flush(self):
+        player_1 = [('3', 'S'), ('5', 'S')]
+        player_2 = [('K', 'C'), ('Q', 'D')]
+        board = [('4', 'S'), ('6', 'S'), ('7', 'S'), ('8', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Straight Flush')
+        self.assertEqual(evaluate(player_2, board), 'High Card')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+
+    def test_best_straight(self):
+        player_1 = [('3', 'C'), ('4', 'C')]
+        player_2 = [('8', 'C'), ('9', 'D')]
+        board = [('5', 'S'), ('6', 'S'), ('7', 'S'), ('T', 'H'), ('Q', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Straight')
+        self.assertEqual(evaluate(player_2, board), 'Straight')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
+
+    def test_straight_tie(self):
+        player_1 = [('3', 'C'), ('4', 'C')]
+        player_2 = [('3', 'S'), ('4', 'D')]
+        board = [('5', 'S'), ('6', 'S'), ('7', 'S'), ('T', 'H'), ('Q', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Straight')
+        self.assertEqual(evaluate(player_2, board), 'Straight')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
 
 
 if __name__ == '__main__':
