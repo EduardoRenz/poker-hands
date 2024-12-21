@@ -2,6 +2,7 @@
 from constants import RANKS, STRENGTH_ORDER, NUMERAL_RANKS
 from Deck import Deck
 from Game import Game
+from utils import show_cards
 
 game = Game()
 
@@ -27,13 +28,11 @@ if __name__ == "__main__":
     ties = 0
 
     for i in range(100):
-        print(f"Rodada {i + 1}")
+        print(f"---------- Rodada {i + 1}------------")
         deck = Deck()
 
-        player_1 = [('T', 'H'), ('T', 'S')]
+        player_1 = [('K', 'H'), ('A', 'H')]
         players_hands['you'] = player_1
-        print("\nMinha mao")
-        print(player_1)
         deck.remove_from_deck(player_1)
 
         # pick a card for each player
@@ -41,11 +40,11 @@ if __name__ == "__main__":
             if i == 0:
                 continue
             player_hand = deck.pick_random_cards()
-            print(f"Player  {player} : {player_hand}")
+            print(f"Player  {player} : {show_cards(player_hand)}")
             players_hands[player] = player_hand
 
-        board = deck.pick_random_cards(3)
-        print(f"Board {board}")
+        board = deck.pick_random_cards(5)
+        print(f"Board {show_cards(board)}\n")
 
         # Evaluate each player
         for i, player in enumerate(players_hands.keys()):
@@ -67,8 +66,8 @@ if __name__ == "__main__":
             continue
 
         winner_name = list(players_hands.keys())[winner_index]
-        print(f"""Winner: {winner_name} with {
-              game.evaluate(winner_hand, board)} ({winner_hand}) """)
+        print(f"""\nWinner: {winner_name} with {
+              game.evaluate(winner_hand, board)} ({show_cards(winner_hand)}) \n""")
 
         win_counts[winner_name]['wins'] += 1
 

@@ -1,13 +1,17 @@
-def exibir_cartas(cartas):
-    """Exibe uma mão de cartas formatada."""
-    return " ".join(exibir_carta(carta) for carta in cartas)
+SIMBOL_MAP = {
+    "H": "♥",
+    "D": "♦",
+    "C": "♣",
+    "S": "♠",
+    "T": "10",
+}
 
 
-def exibir_carta(carta):
-    """Exibe uma carta formatada."""
-    return carta[0] + carta[1]
+def show_cards(cartas):
+    """Show formated cards."""
+    return " ".join(show_card(carta) for carta in cartas)
 
 
-def exibir_mao(mao):
-    """Exibe uma mão de cartas formatada."""
-    return " ".join(exibir_carta(carta) for carta in mao)
+def show_card(carta):
+    """Show one card formated."""
+    return carta[0] + SIMBOL_MAP[carta[1]]
