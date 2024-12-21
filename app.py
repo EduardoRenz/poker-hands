@@ -1,7 +1,7 @@
 # %%
 
 from collections import Counter
-from constants import RANKS, SUITS, STRENGTH_ORDER
+from constants import RANKS, STRENGTH_ORDER, NUMERAL_RANKS
 from Deck import Deck
 
 deck = Deck()
@@ -67,11 +67,43 @@ def evaluate(mao_jogador, board):
 
 def get_winner(players_hands, board):
     """Retorna o jogador com a melhor mão de poker."""
-    return max(players_hands, key=lambda x: STRENGTH_ORDER.index(evaluate(x, board)))
+
+    results = []
+    for hand in players_hands:
+        results.append(evaluate(hand, board))
+
+    best_hand = -1
+    for i, result in enumerate(results):
+        if (best_hand == -1):
+            best_hand = i
+            continue
+        if STRENGTH_ORDER.index(result) > STRENGTH_ORDER.index(results[best_hand]):
+            best_hand = i
+            continue
+
+        if (STRENGTH_ORDER.index(result) == STRENGTH_ORDER.index(results[best_hand])):
+            current_only_numbers_sum = sum([NUMERAL_RANKS[RANKS.index(first)] for first,
+                                            second in players_hands[i]])
+            best_only_numbers_sum = sum([NUMERAL_RANKS[RANKS.index(first)] for first,
+                                        second in players_hands[best_hand]])
+
+            if (current_only_numbers_sum > best_only_numbers_sum):
+                best_hand = i
+                continue
+            if (current_only_numbers_sum == best_only_numbers_sum):
+                best_hand = -1
+                continue
+
+    if (best_hand == -1):
+        return None
+    return players_hands[best_hand]
 
 
 def get_winner_index(players_hands, board):
-    return players_hands.index(get_winner(players_hands, board))
+    winner = get_winner(players_hands, board)
+    if winner is None:
+        return None
+    return players_hands.index(winner)
 
 
 def exibir_cartas(cartas):
@@ -89,31 +121,30 @@ def exibir_mao(mao):
     return " ".join(exibir_carta(carta) for carta in mao)
 
 
-mao_jogador = [('A', 'H'), ('A', 'S')]
-print("\nMinha mao")
-print(mao_jogador)
-deck.remove_from_deck(mao_jogador)
+if __name__ == "__main__":
 
-player_2 = deck.pick_random_cards()
-print("\nPlayer 2")
-print(player_2)
+    mao_jogador = [('A', 'H'), ('A', 'S')]
+    print("\nMinha mao")
+    print(mao_jogador)
+    deck.remove_from_deck(mao_jogador)
 
+    player_2 = deck.pick_random_cards()
+    print("\nPlayer 2")
+    print(player_2)
 
-board = deck.pick_random_cards(5)
+    board = deck.pick_random_cards(5)
 
+    evaluation = evaluate(mao_jogador, board)
+    player_2_evaluation = evaluate(player_2, board)
 
-evaluation = evaluate(mao_jogador, board)
-player_2_evaluation = evaluate(player_2, board)
-
-
-winner_index = get_winner_index([mao_jogador, player_2], board)
-winner_hand = get_winner([mao_jogador, player_2], board)
-print("\nWinner: ", winner_index)
-print(f"""
-    Player 1: {exibir_mao(mao_jogador)} ({evaluation})
-    Player 2: {exibir_mao(player_2)} ({player_2_evaluation})
-    Board: {exibir_mao(board)}
-    Winner: {exibir_mao(winner_hand)}""")
+    winner_index = get_winner_index([mao_jogador, player_2], board)
+    winner_hand = get_winner([mao_jogador, player_2], board)
+    print("\nWinner: ", winner_index)
+    print(f"""
+        Player 1: {exibir_mao(mao_jogador)} ({evaluation})
+        Player 2: {exibir_mao(player_2)} ({player_2_evaluation})
+        Board: {exibir_mao(board)}
+        Winner: {exibir_mao(winner_hand)}""")
 
 
 # %%

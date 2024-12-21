@@ -118,7 +118,7 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(evaluate_hand(player_1), 'High Card')
         self.assertEqual(evaluate_hand(player_2), 'High Card')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), -1)
+        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
 
 #     def test_one_pair(self):
 #         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['K', 'H'], ['Q', 'H'], [
