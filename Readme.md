@@ -4,6 +4,9 @@
 A Texas Hold'em Poker simulator to retrieve statistics about hands in a game.
 
 
+![image](https://github.com/user-attachments/assets/b8403871-2355-4c85-b334-88e831cbcfda)
+
+
 ## About Texas Hold'em Poker
 
 Poker is a family of card games where players wager over which hand is best according to specific rules. While there are many variations, some aspects are common to all poker games. Here's a breakdown of the general rules:
