@@ -73,12 +73,18 @@ def get_winner(players_hands, board):
         results.append(evaluate(hand, board))
 
     best_hand = -1
+    best_match = None
     for i, result in enumerate(results):
-        if (best_hand == -1):
+        if (best_hand == -1 and best_match is None):
             best_hand = i
+            best_match = result
             continue
         if STRENGTH_ORDER.index(result) > STRENGTH_ORDER.index(results[best_hand]):
             best_hand = i
+            best_match = result
+            continue
+
+        if STRENGTH_ORDER.index(best_match) > STRENGTH_ORDER.index(result):
             continue
 
         if (STRENGTH_ORDER.index(result) == STRENGTH_ORDER.index(results[best_hand])):
@@ -89,6 +95,7 @@ def get_winner(players_hands, board):
 
             if (current_only_numbers_sum > best_only_numbers_sum):
                 best_hand = i
+                best_match = result
                 continue
             if (current_only_numbers_sum == best_only_numbers_sum):
                 best_hand = -1

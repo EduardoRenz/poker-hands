@@ -115,18 +115,39 @@ class TestGetWinner(unittest.TestCase):
     def test_tie_of_high_card(self):
         player_1 = [('8', 'H'), ('3', 'S')]
         player_2 = [('8', 'C'), ('3', 'D')]
-        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        board = [('A', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(evaluate_hand(player_1), 'High Card')
+        self.assertEqual(evaluate(player_1, board), 'High Card')
         self.assertEqual(evaluate_hand(player_2), 'High Card')
+        self.assertEqual(evaluate(player_2, board), 'High Card')
         self.assertEqual(get_winner_index([player_1, player_2,], board), None)
 
-#     def test_one_pair(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['K', 'H'], ['Q', 'H'], [
-#                          'J', 'H'])], [(['A', 'H'], ['A', 'D'], ['K', 'H'], ['Q', 'H'], ['J', 'H'])]), 0)
+    def test_one_agains_bigger_one_pair_tie(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('8', 'C'), ('3', 'D')]
+        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'One Pair')
+        self.assertEqual(evaluate(player_2, board), 'One Pair')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
 
-#     def test_two_pair(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['K', 'H'], ['K', 'D'], [
-#                          'J', 'H'])], [(['A', 'H'], ['A', 'D'], ['K', 'H'], ['K', 'D'], ['J', 'H'])]), 0)
+    def test_one_agains_bigger_one_pair(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('9', 'C'), ('3', 'D')]
+        board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'One Pair')
+        self.assertEqual(evaluate(player_2, board), 'One Pair')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
+
+    def test_two_pair_tie(self):
+        player_1 = [('8', 'H'), ('3', 'S')]
+        player_2 = [('8', 'C'), ('3', 'D')]
+        player_3 = [('4', 'C'), ('3', 'D')]
+        board = [('8', 'S'), ('3', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_1, board), 'Two Pair')
+        self.assertEqual(evaluate(player_2, board), 'Two Pair')
+        self.assertEqual(evaluate(player_3, board), 'One Pair')
+        self.assertEqual(get_winner_index(
+            [player_1, player_2, player_3], board), None)
 
 #     def test_three_of_a_kind(self):
 #         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['A', 'C'], ['K', 'H'], [
