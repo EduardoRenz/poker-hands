@@ -1,11 +1,8 @@
 # %%
-
-
 from constants import RANKS, STRENGTH_ORDER, NUMERAL_RANKS
 from Deck import Deck
 from Game import Game
 
-deck = Deck()
 game = Game()
 
 
@@ -32,29 +29,73 @@ def exibir_mao(mao):
 
 
 if __name__ == "__main__":
+    win_counts = {
+        'you': {'wins': 0},
+        'player_2': {'wins': 0},
+        'player_3': {'wins': 0},
+        'player_4': {'wins': 0},
+        'player_5': {'wins': 0},
+        'player_6': {'wins': 0},
+    }
 
-    mao_jogador = [('A', 'H'), ('A', 'S')]
-    print("\nMinha mao")
-    print(mao_jogador)
-    deck.remove_from_deck(mao_jogador)
+    players_hands = {
+        'you': [],
+        'player_2': [],
+        'player_3': [],
+        'player_4': [],
+        'player_5': [],
+        'player_6': [],
+    }
+    ties = 0
 
-    player_2 = deck.pick_random_cards()
-    print("\nPlayer 2")
-    print(player_2)
+    for i in range(100):
+        print(f"Rodada {i + 1}")
+        deck = Deck()
 
-    board = deck.pick_random_cards(5)
+        player_1 = [('T', 'H'), ('T', 'S')]
+        players_hands['you'] = player_1
+        print("\nMinha mao")
+        print(player_1)
+        deck.remove_from_deck(player_1)
 
-    evaluation = game.evaluate(mao_jogador, board)
-    player_2_evaluation = game.evaluate(player_2, board)
+        # pick a card for each player
+        for i, player in enumerate(players_hands.keys()):
+            if i == 0:
+                continue
+            player_hand = deck.pick_random_cards()
+            print(f"Player  {player} : {player_hand}")
+            players_hands[player] = player_hand
 
-    winner_index = get_winner_index([mao_jogador, player_2], board)
-    winner_hand = game.get_winner([mao_jogador, player_2], board)
-    print("\nWinner: ", winner_index)
-    print(f"""
-        Player 1: {exibir_mao(mao_jogador)} ({evaluation})
-        Player 2: {exibir_mao(player_2)} ({player_2_evaluation})
-        Board: {exibir_mao(board)}
-        Winner: {exibir_mao(winner_hand)}""")
+        board = deck.pick_random_cards(3)
+        print(f"Board {board}")
 
+        # Evaluate each player
+        for i, player in enumerate(players_hands.keys()):
+            evaluation = game.evaluate(players_hands[player], board)
+            print(f"Player  {player}: {evaluation}")
 
-# %%
+            # evaluation = game.evaluate(player_1, board)
+            # player_2_evaluation = game.evaluate(player_2, board)
+
+        winner_index = get_winner_index(
+            [hand for hand in players_hands.values()], board)
+
+        winner_hand = game.get_winner(
+            [hand for hand in players_hands.values()], board)
+
+        if (winner_index is None):
+            print("Tie")
+            ties += 1
+            continue
+
+        winner_name = list(players_hands.keys())[winner_index]
+        print(f"""Winner: {winner_name} with {
+              game.evaluate(winner_hand, board)} ({winner_hand}) """)
+
+        win_counts[winner_name]['wins'] += 1
+
+    # Statistics of win counts
+    for player, win_count in win_counts.items():
+        print(f"{player} won {win_count['wins']} times")
+
+    print(f"Ties: {ties}")
