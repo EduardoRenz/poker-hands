@@ -149,9 +149,13 @@ class TestGetWinner(unittest.TestCase):
         self.assertEqual(get_winner_index(
             [player_1, player_2, player_3], board), None)
 
-#     def test_three_of_a_kind(self):
-#         self.assertEqual(get_winner([(['A', 'H'], ['A', 'D'], ['A', 'C'], ['K', 'H'], [
-#                          'J', 'H'])], [(['A', 'H'], ['A', 'D'], ['A', 'C'], ['K', 'H'], ['J', 'H'])]), 0)
+    def test_two_pair(self):
+        player_1 = [('9', 'C'), ('A', 'D')]
+        player_2 = [('8', 'H'), ('3', 'S')]
+        board = [('8', 'S'), ('3', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
+        self.assertEqual(evaluate(player_2, board), 'Two Pair')
+        self.assertEqual(evaluate(player_1, board), 'One Pair')
+        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
 
 #     def test_straight(self):
 #         self.assertEqual(get_winner([(['A', 'H'], ['2', 'H'], ['3', 'H'], ['4', 'H'], [
