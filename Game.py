@@ -100,3 +100,9 @@ class Game:
         if (best_hand == -1):
             return None
         return players_hands[best_hand]
+
+    def get_winner_index(self, players_hands, board):
+        winner = self.get_winner(players_hands, board)
+        if winner is None:
+            return None
+        return players_hands.index(winner)

@@ -1,6 +1,4 @@
 import unittest
-
-from app import get_winner_index
 from Deck import Deck
 from Game import Game
 
@@ -113,7 +111,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('K', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(game.get_combination(player_1 + board), 'High Card')
         self.assertEqual(game.get_combination(player_2 + board), 'High Card')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 0)
 
     def test_tie_of_high_card(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -123,7 +122,8 @@ class TestGetWinner(unittest.TestCase):
         self.assertEqual(game.evaluate(player_1, board), 'High Card')
         self.assertEqual(game.get_combination(player_2), 'High Card')
         self.assertEqual(game.evaluate(player_2, board), 'High Card')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), None)
 
     def test_one_agains_bigger_one_pair_tie(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -131,7 +131,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'One Pair')
         self.assertEqual(game.evaluate(player_2, board), 'One Pair')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), None)
 
     def test_one_agains_bigger_one_pair(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -139,7 +140,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('5', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'One Pair')
         self.assertEqual(game.evaluate(player_2, board), 'One Pair')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 1)
 
     def test_two_pair_tie(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -149,7 +151,7 @@ class TestGetWinner(unittest.TestCase):
         self.assertEqual(game.evaluate(player_1, board), 'Two Pair')
         self.assertEqual(game.evaluate(player_2, board), 'Two Pair')
         self.assertEqual(game.evaluate(player_3, board), 'One Pair')
-        self.assertEqual(get_winner_index(
+        self.assertEqual(game.get_winner_index(
             [player_1, player_2, player_3], board), None)
 
     def test_two_pair(self):
@@ -158,7 +160,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('3', 'H'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_2, board), 'Two Pair')
         self.assertEqual(game.evaluate(player_1, board), 'One Pair')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 1)
 
     def test_three_of_a_kind_tie(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -168,7 +171,7 @@ class TestGetWinner(unittest.TestCase):
         self.assertEqual(game.evaluate(player_1, board), 'Three of a Kind')
         self.assertEqual(game.evaluate(player_2, board), 'Three of a Kind')
         self.assertEqual(game.evaluate(player_3, board), 'One Pair')
-        self.assertEqual(get_winner_index(
+        self.assertEqual(game.get_winner_index(
             [player_1, player_2, player_3], board), None)
 
     def test_three_of_a_kind(self):
@@ -177,7 +180,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('8', 'D'), ('2', 'S'), ('T', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Three of a Kind')
         self.assertEqual(game.evaluate(player_2, board), 'One Pair')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 0)
 
     def test_full_house(self):
         player_1 = [('8', 'H'), ('3', 'S')]
@@ -185,7 +189,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'S'), ('8', 'D'), ('2', 'S'), ('3', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Full House')
         self.assertEqual(game.evaluate(player_2, board), 'One Pair')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 0)
 
     def test_four_of_a_kind(self):
         player_1 = [('8', 'H'), ('8', 'S')]
@@ -193,7 +198,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('8', 'D'), ('8', 'C'), ('2', 'S'), ('8', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Four of a Kind')
         self.assertEqual(game.evaluate(player_2, board), 'Three of a Kind')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 0)
 
     def test_straight_flush(self):
         player_1 = [('3', 'S'), ('5', 'S')]
@@ -201,7 +207,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('4', 'S'), ('6', 'S'), ('7', 'S'), ('8', 'H'), ('9', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Straight Flush')
         self.assertEqual(game.evaluate(player_2, board), 'High Card')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 0)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 0)
 
     def test_best_straight(self):
         player_1 = [('3', 'C'), ('4', 'C')]
@@ -209,7 +216,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('5', 'S'), ('6', 'S'), ('7', 'S'), ('T', 'H'), ('Q', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Straight')
         self.assertEqual(game.evaluate(player_2, board), 'Straight')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), 1)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), 1)
 
     def test_straight_tie(self):
         player_1 = [('3', 'C'), ('4', 'C')]
@@ -217,7 +225,8 @@ class TestGetWinner(unittest.TestCase):
         board = [('5', 'S'), ('6', 'S'), ('7', 'S'), ('T', 'H'), ('Q', 'C')]
         self.assertEqual(game.evaluate(player_1, board), 'Straight')
         self.assertEqual(game.evaluate(player_2, board), 'Straight')
-        self.assertEqual(get_winner_index([player_1, player_2,], board), None)
+        self.assertEqual(game.get_winner_index(
+            [player_1, player_2,], board), None)
 
 
 if __name__ == '__main__':

@@ -6,28 +6,6 @@ from Game import Game
 game = Game()
 
 
-def get_winner_index(players_hands, board):
-    winner = game.get_winner(players_hands, board)
-    if winner is None:
-        return None
-    return players_hands.index(winner)
-
-
-def exibir_cartas(cartas):
-    """Exibe uma mão de cartas formatada."""
-    return " ".join(exibir_carta(carta) for carta in cartas)
-
-
-def exibir_carta(carta):
-    """Exibe uma carta formatada."""
-    return carta[0] + carta[1]
-
-
-def exibir_mao(mao):
-    """Exibe uma mão de cartas formatada."""
-    return " ".join(exibir_carta(carta) for carta in mao)
-
-
 if __name__ == "__main__":
     win_counts = {
         'you': {'wins': 0},
@@ -77,7 +55,7 @@ if __name__ == "__main__":
             # evaluation = game.evaluate(player_1, board)
             # player_2_evaluation = game.evaluate(player_2, board)
 
-        winner_index = get_winner_index(
+        winner_index = game.get_winner_index(
             [hand for hand in players_hands.values()], board)
 
         winner_hand = game.get_winner(
