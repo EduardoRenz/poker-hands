@@ -14,9 +14,15 @@ for first_card in deck.deck:
             continue
         all_two_hands_combinations.append([first_card, second_card])
 
+# Remove duplicates
+for combination in all_two_hands_combinations:
+    inverse_combination = combination[::-1]
+    all_two_hands_combinations.remove(inverse_combination)
 
+
+# %%
 number_of_games = 100  # How many games to play with test hand
-board_cards = 3  # 5 = Full game, 3 = Flop
+board_cards = 5  # 5 = Full game, 3 = Flop
 statistics = []
 
 if __name__ == "__main__":
@@ -99,5 +105,5 @@ if __name__ == "__main__":
 
 # %%
 df = pd.DataFrame(statistics)
-df.to_csv('data/flop_game_statistics.csv', index=False)
+df.to_csv('data/full_game_statistics.csv', index=False)
 # %%
